@@ -1,0 +1,8 @@
+[swarm_manager]
+swarm_manager ansible_host=192.168.23.10
+
+[swarm_manager:vars]
+ansible_python_interpreter=/usr/bin/python3
+
+[load_balancer]
+swarm_manager

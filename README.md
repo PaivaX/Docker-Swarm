@@ -26,6 +26,12 @@ Abstract:xxx
   ```
   docker stack deploy -c docker-compose.yml portainer
   ```
+
+- Instalar o portainer Agent
+  ```
+  ./portainer_Agent.sh
+  ```
+
 - Instalar o nginx (quantas replicas?)
   ```
   docker service create --name nginx --replicas <2> --publish 8080:80 nginx

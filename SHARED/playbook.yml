@@ -1,0 +1,37 @@
+---
+- name: Provision and Configure Swarm Manager
+  hosts: swarm_manager
+  become: true
+
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+
+    - name: Configure Swarm Manager
+      shell: docker swarm init --advertise-addr {{ ansible_host }}
+      args:
+        creates: /root/.docker/config.json
+
+- name: Configure Nginx Load Balancer
+  hosts: load_balancer
+  become: true
+
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Configure Nginx
+      template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+      notify: Restart Nginx
+
+  handlers:
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted

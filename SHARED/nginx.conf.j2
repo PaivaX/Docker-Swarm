@@ -1,0 +1,18 @@
+http {
+  upstream swarm_backend {
+    {% for worker in groups['swarm_workers'] %}
+    server {{ hostvars[worker].ansible_host }}:9000;
+    {% endfor %}
+  }
+
+  server {
+    listen 80;
+    server_name swarm.example.com;
+
+    location / {
+      proxy_pass http://swarm_backend;
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+    }
+  }
+}

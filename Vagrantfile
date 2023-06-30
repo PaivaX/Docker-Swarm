@@ -11,12 +11,18 @@ Vagrant.configure("2") do |config|
     end
 
     node.vm.provision "shell", inline: <<-SHELL
-    curl -fsSL https://get.docker.com -o get-docker.sh
-    sudo sh get-docker.sh
-    sudo usermod -aG docker vagrant
+      sudo apt-get update
+      sudo apt-get install -y ansible
+      curl -fsSL https://get.docker.com -o get-docker.sh
+      sudo sh get-docker.sh
+      sudo usermod -aG docker vagrant
     SHELL
 
-    node.vm.synced_folder './SHARED', '/vagrant', disabled: true
+    #node.vm.provision "shell", privileged: false, inline: <<-SHELL
+    #  ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
+    #SHELL
+
+    node.vm.synced_folder './SHARED/', '/home/vagrant/SHARED'
   end
 
   (1..2).each do |i|
@@ -36,7 +42,7 @@ Vagrant.configure("2") do |config|
         sudo usermod -aG docker vagrant
       SHELL
 
-      node.vm.synced_folder './SHARED', '/vagrant', disabled: true
+      node.vm.synced_folder './SHARED/', '/vagrant', disabled: false
     end
   end
 
