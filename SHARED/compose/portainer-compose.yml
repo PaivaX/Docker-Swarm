@@ -8,6 +8,9 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
+    # Para ser possivel utilizar o grafana
+    labels:
+      - "monitoring=true"
 
 volumes:
   portainer_data:

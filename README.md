@@ -1,15 +1,11 @@
 Cloud Computing
 ===
 O desenvolvimento da segunda parte do projeto, é a construção e configuração de um cluster, para servir uma página web em PHP, com base de dados SQL e websockets.
-Inicialmente foi pensado desenvolver através dos serviços da Google Cloud, mas devido a uma impossibilidade técnica, o portainer cada vez que se fazia JOIN de um node, bloqueava o sistema. Foi testado em CentOS e ubuntu, com o mesmo comportamento, pelo que decidimos implementar o cluster localmente, recorrendo ao VirtualBox.
 
 
 ## Informação do projeto
 - Titlo:  `Cloud Computing - virtualização usando docker`
 - Autores:  `José Santos`,`Rui Paiva`
-- Preprint: [https://arxiv.org/abs/xx]()
-- Full-preprint: [paper position]()
-- Video: [video position]()
 
 ## Estrura de nodes
 - 3 VM´s ubuntu:
@@ -60,7 +56,7 @@ Inicialmente foi pensado desenvolver através dos serviços da Google Cloud, mas
     ```
     docker stack deploy --compose-file=./postgres-compose.yml postgres
     ```
--  Instalar o PGADMIN
+-  Instalar o PGADMIN**
     ```
     docker stack deploy --compose-file=./pgadmin-compose.yml pgadmin
     ```
@@ -68,6 +64,31 @@ Inicialmente foi pensado desenvolver através dos serviços da Google Cloud, mas
     ```
     docker stack deploy --compose-file=./proxy_manager-compose.yml proxy_manager
     ```
+-  Instalar o NGINX Amplify
+    ```
+    sudo API_KEY='5188aa366ea80144f1b009d3ac4aa4e7' sh ./nginxamplify.sh
+    ```
+
+** Após instalar o PGADMIN, é necessário criar as tabelas no postgres. Aceder a http://192.168.23.10:5050
+
+Dados para login:
+    ```
+    user="cloud@ipt.pt"
+    | password="cloud"
+    ```
+
+Efetuar a ligação à BD, com os dados:
+
+    ```
+    hostname: "192.168.23.10"
+    database: "cloud_computing"
+    username: "cloud"
+    password: "cloud"
+    ```
+
+ e importar o script SQl presente na pasta compose/postgres/dump.sql
+
+ 
 
 ## Gerir os serviços
 - Escalar um serviço
