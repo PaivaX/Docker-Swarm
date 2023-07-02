@@ -1,11 +1,13 @@
 Cloud Computing
 ===
-O desenvolvimento da segunda parte do projeto, é a construção e configuração de um cluster, para servir uma página web em PHP, com base de dados SQL e websockets.
+O desenvolvimento da segunda parte do projeto, é a construção e configuração de um cluster, para servir uma página web em PHP, com base de dados SQL e websockets, baseado em Docker.
 
 
 ## Informação do projeto
 - Titlo:  `Cloud Computing - virtualização usando docker`
 - Autores:  `José Santos`,`Rui Paiva`
+- Trabalho realizado no âmbito da disciplina de Computação em nuvem e virtualização 
+- Data: 02/07/2023
 
 ## Estrura de nodes
 - 3 VM´s ubuntu:
@@ -111,48 +113,6 @@ Efetuar a ligação à BD, com os dados:
 
 <br>
 
-## Directory Hierarchy
-```
-|—— .vagrant
-|    |—— machines
-|        |—— swarm-manager
-|            |—— virtualbox
-|                |—— action_provision
-|                |—— action_set_name
-|                |—— box_meta
-|                |—— creator_uid
-|                |—— id
-|                |—— index_uuid
-|                |—— private_key
-|                |—— synced_folders
-|                |—— vagrant_cwd
-|        |—— swarm-worker1
-|            |—— virtualbox
-|                |—— action_provision
-|                |—— action_set_name
-|                |—— box_meta
-|                |—— creator_uid
-|                |—— id
-|                |—— index_uuid
-|                |—— private_key
-|                |—— synced_folders
-|                |—— vagrant_cwd
-|        |—— swarm-worker2
-|            |—— virtualbox
-|                |—— action_provision
-|                |—— action_set_name
-|                |—— box_meta
-|                |—— creator_uid
-|                |—— id
-|                |—— index_uuid
-|                |—— private_key
-|                |—— synced_folders
-|                |—— vagrant_cwd
-|    |—— rgloader
-|        |—— loader.rb
-|—— ubuntu-bionic-18.04-cloudimg-console.log
-|—— Vagrantfile
-```
 ## Comandos Úteis
 ### Docker
 - Serviços existentes
@@ -163,7 +123,7 @@ Efetuar a ligação à BD, com os dados:
   ```
   docker node update --availability active <node-id>
   ```
-### Comandos úteis
+
 
 - Reiniciar o serviço Docker
   ```
@@ -174,9 +134,9 @@ Efetuar a ligação à BD, com os dados:
   ```
   sudo docker service update --force <nome_do_servico>
   ```
-## References
+## Referências
 - [docker.com - deploy service](https://docs.docker.com/engine/swarm/swarm-tutorial/deploy-service/)
 - [docker.com - swarm](https://docs.docker.com/engine/swarm/services/)
-- [code-1](https://github.com)
-- [code-2](https://github.com)
+- [NGINX](https://www.nginx.com/blog/docker-swarm-load-balancing-nginx-plus/)
+
   
