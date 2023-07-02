@@ -1,6 +1,9 @@
 Cloud Computing
 ===
-Abstract:xxx
+O desenvolvimento da segunda parte do projeto, é a construção e configuração de um cluster, para servir uma página web em PHP, com base de dados SQL e websockets.
+Inicialmente foi pensado desenvolver atravéz dos serviços da Google Cloud, mas devido a uma impossibilidade técnica, decidimos implementar o cluster localmente, recorrendo ao VirtualBox.
+
+
 ## Papar Information
 - Title:  `paper name`
 - Authors:  `José Santos`,`Rui Paiva`
@@ -8,43 +11,75 @@ Abstract:xxx
 - Full-preprint: [paper position]()
 - Video: [video position]()
 
-## Install & Dependence
-- python
-- pytorch
-- numpy
+## Estrura de nodes
+- 3 VM:
+  - Manager
+  - worker1
+  - worker2<br><br>
 
-## Use
+
+## Configuração
 - Iniciar Swarm
   ```
   sudo docker swarm init --advertise-addr 192.168.23.10
   ```
-- Join em todas as VM´s
+- Join em todas as VM´s** (colocar o token fornecido anteriormente)
   ```
-  docker swarm join --token <token> 192.168.23.10:2377
+  docker swarm join --token <token**> 192.168.23.10:2377
   ```
-- Instalar o portainer
+- Instalar o portainer no swarm-manager
   ```
+  cd SHARED/
   docker stack deploy -c docker-compose.yml portainer
   ```
 
 - Instalar o portainer Agent
   ```
-  ./portainer_Agent.sh
+  ./start_portainer.sh
   ```
 
-- Instalar o nginx (quantas replicas?)
+- Criar novo Environment
+  
+  No portainer Web, criar um Environment Agent, escolhendo um nome, ex: cloud-computing, e colocar o <IP_manager:9001>
+
+  Não esquecer de alterar o Public IP, para o IP do manager.
+
+
+- Instalar o nginx (quantas replicas? Substituir o "2")
   ```
-  docker service create --name nginx --replicas <2> --publish 8080:80 nginx
+  docker service create --name nginx-php --mount type=bind,source=/vagrant/app,target=/app --replicas 2 --publish 8080:80 webdevops/php-nginx:7.3
+
+  ou (com ficheiro .conf)
+
+  docker service create --name nginx --mount type=bind,source=/vagrant/app,target=/usr/share/nginx/html --mount type=bind,source=/vagrant/SHARED/nginx.conf,target=/etc/nginx/conf.d/default.conf --replicas 2 --publish 8080:80 nginx
+  ```
+  Após este passo, visitar: http://192.168.23.10:8080 e verificar se abre a página do NGINX.<br><br>
+
+-  Instalar o POSTGRES
+    ```
+    docker stack deploy --compose-file=./postgres-compose.yml postgres
+    ```
+
+## Gerir os serviços
+- Escalar um serviço
+  ```
+  docker service scale <nome_do_serviço>=<num_replicas>
+  ```
+- Verificar as informações dos serviços a correr
+  ```
+  docker service ls
+  ```
+- Verificar em que nodes está a correr um serviço
+  ```
+  docker service ps <nome_serviço>
+  ```
+-
+  ```
+  docker node update --availability <drain|active> <nome_do_node>
   ```
 
 
-## Pretrained model
-| Model | Download |
-| ---     | ---   |
-| Model-1 | [download]() |
-| Model-2 | [download]() |
-| Model-3 | [download]() |
-
+<br>
 
 ## Directory Hierarchy
 ```
@@ -88,31 +123,30 @@ Abstract:xxx
 |—— ubuntu-bionic-18.04-cloudimg-console.log
 |—— Vagrantfile
 ```
-## Code Details
-### Tested Platform
-- software
+## Comandos Úteis
+### Docker
+- Serviços existentes
   ```
-  OS: Debian unstable (May 2021), Ubuntu LTS
-  Python: 3.8.5 (anaconda)
-  PyTorch: 1.7.1, 1.8.1
+  sudo docker service ps <nome_serviço>
   ```
-- hardware
+- Mudar disponibilidade de um node
   ```
-  CPU: Intel Xeon 6226R
-  GPU: Nvidia RTX3090 (24GB)
+  docker node update --availability active <node-id>
   ```
-### Hyper parameters
-```
-```
+### Comandos úteis
+
+- Reiniciar o serviço Docker
+  ```
+  sudo service docker restart
+  ```
+
+- Reiniciar um serviço
+  ```
+  sudo docker service update --force <nome_do_servico>
+  ```
 ## References
-- [docker.com](https://docs.docker.com/engine/swarm/swarm-tutorial/deploy-service/)
-- [paper-2]()
+- [docker.com - deploy service](https://docs.docker.com/engine/swarm/swarm-tutorial/deploy-service/)
+- [docker.com - swarm](https://docs.docker.com/engine/swarm/services/)
 - [code-1](https://github.com)
 - [code-2](https://github.com)
   
-## License
-
-## Citing
-If you use xxx,please use the following BibTeX entry.
-```
-```

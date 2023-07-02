@@ -1,18 +1,29 @@
 ---
 - name: Provision and Configure Swarm Manager
-  hosts: swarm_manager
+  hosts: load_balancer
   become: true
 
+- name: Add hosts to known_hosts
+  hosts: load_balancer
+  gather_facts: no
   tasks:
-    - name: Install Docker
-      apt:
-        name: docker-ce
-        state: present
+  - name: run ssh-keyscan to add keys to known_hosts
+    local_action: shell ssh-keyscan {{ ansible_host }} >> ~/.ssh/known_hosts
+  - name: Copy SSH public key to remote node
+    authorized_key:
+      user: vagrant
+      key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+      state: present
 
-    - name: Configure Swarm Manager
-      shell: docker swarm init --advertise-addr {{ ansible_host }}
-      args:
-        creates: /root/.docker/config.json
+  - name: Install Docker
+    apt:
+      name: docker-ce
+      state: present
+
+  - name: Configure Swarm Manager
+    shell: docker swarm init --advertise-addr {{ ansible_host }}
+    args:
+      creates: /root/.docker/config.json
 
 - name: Configure Nginx Load Balancer
   hosts: load_balancer

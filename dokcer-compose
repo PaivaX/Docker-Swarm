@@ -2,10 +2,7 @@ version: '3.8'
 
 services:
   postgres:
-    build:
-      context: ./
-      dockerfile: postgres/Dockerfile
-    container_name: postgres1
+    image: postgres
     restart: always
     ports:
       - 5442:5432
@@ -14,13 +11,12 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - ./data/postgres1:/var/lib/postgresql/data
+      - ./app/data/postgres1:/var/lib/postgresql/data
       - pg-config:/etc/postgresql
     entrypoint: docker-entrypoint.sh -c 'config_file=/etc/postgresql/postgresql.conf'
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: pgAdmin
     restart: always
     ports:
       - 5050:80
@@ -28,7 +24,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     volumes:
-      - ./../app/data/pgadmin:/var/lib/pgadmin
+      - /app/data/pgadmin:/var/lib/pgadmin
 
 volumes:
   pg-config:

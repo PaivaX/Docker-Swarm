@@ -15,3 +15,7 @@ docker service create \
   --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
   --mount type=bind,src=/var/lib/docker/volumes,dst=/var/lib/docker/volumes \
   portainer/agent:2.18.3
+
+# Mensagem de sucesso
+echo "Serviço criado. Finaliza a configuração no browser."
+echo "http://192.168.23.10:9000"
