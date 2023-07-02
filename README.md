@@ -1,18 +1,18 @@
 Cloud Computing
 ===
 O desenvolvimento da segunda parte do projeto, é a construção e configuração de um cluster, para servir uma página web em PHP, com base de dados SQL e websockets.
-Inicialmente foi pensado desenvolver atravéz dos serviços da Google Cloud, mas devido a uma impossibilidade técnica, decidimos implementar o cluster localmente, recorrendo ao VirtualBox.
+Inicialmente foi pensado desenvolver através dos serviços da Google Cloud, mas devido a uma impossibilidade técnica, o portainer cada vez que se fazia JOIN de um node, bloqueava o sistema. Foi testado em CentOS e ubuntu, com o mesmo comportamento, pelo que decidimos implementar o cluster localmente, recorrendo ao VirtualBox.
 
 
-## Papar Information
-- Title:  `paper name`
-- Authors:  `José Santos`,`Rui Paiva`
+## Informação do projeto
+- Titlo:  `Cloud Computing - virtualização usando docker`
+- Autores:  `José Santos`,`Rui Paiva`
 - Preprint: [https://arxiv.org/abs/xx]()
 - Full-preprint: [paper position]()
 - Video: [video position]()
 
 ## Estrura de nodes
-- 3 VM:
+- 3 VM´s ubuntu:
   - Manager
   - worker1
   - worker2<br><br>
@@ -21,6 +21,7 @@ Inicialmente foi pensado desenvolver atravéz dos serviços da Google Cloud, mas
 ## Configuração
 - Iniciar Swarm
   ```
+  vagrant ssh swarm-manager
   sudo docker swarm init --advertise-addr 192.168.23.10
   ```
 - Join em todas as VM´s** (colocar o token fornecido anteriormente)
@@ -30,7 +31,7 @@ Inicialmente foi pensado desenvolver atravéz dos serviços da Google Cloud, mas
 - Instalar o portainer no swarm-manager
   ```
   cd SHARED/
-  docker stack deploy -c docker-compose.yml portainer
+  docker stack deploy -c portainer-compose.yml portainer
   ```
 
 - Instalar o portainer Agent
@@ -59,7 +60,15 @@ Inicialmente foi pensado desenvolver atravéz dos serviços da Google Cloud, mas
     ```
     docker stack deploy --compose-file=./postgres-compose.yml postgres
     ```
- 
+-  Instalar o PGADMIN
+    ```
+    docker stack deploy --compose-file=./pgadmin-compose.yml pgadmin
+    ```
+-  Instalar o PROXY MANAGER
+    ```
+    docker stack deploy --compose-file=./proxy_manager-compose.yml proxy_manager
+    ```
+
 ## Gerir os serviços
 - Escalar um serviço
   ```
