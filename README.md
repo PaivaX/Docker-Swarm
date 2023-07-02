@@ -59,7 +59,7 @@ Inicialmente foi pensado desenvolver atravéz dos serviços da Google Cloud, mas
     ```
     docker stack deploy --compose-file=./postgres-compose.yml postgres
     ```
-
+ 
 ## Gerir os serviços
 - Escalar um serviço
   ```
