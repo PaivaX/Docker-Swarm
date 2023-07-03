@@ -116,6 +116,11 @@ Efetuar a ligação à BD, com os dados:
 
 ## Comandos Úteis
 ### Docker
+
+- Criar serviços com restrição por label
+  ```
+  docker service create --name <nome_servico> --constraint 'node.type==worker' <img_servico>
+  ```
 - Serviços existentes
   ```
   sudo docker service ps <nome_serviço>
