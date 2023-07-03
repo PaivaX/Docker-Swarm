@@ -28,7 +28,7 @@ O desenvolvimento da segunda parte do projeto, é a construção e configuraçã
   ```
 - Instalar o portainer no swarm-manager
   ```
-  cd SHARED/
+  cd SHARED/compose
   docker stack deploy -c portainer-compose.yml portainer
   ```
 
@@ -39,10 +39,11 @@ O desenvolvimento da segunda parte do projeto, é a construção e configuraçã
 
 - Criar novo Environment
   
-  No portainer Web, criar um Environment Agent, escolhendo um nome, ex: cloud-computing, e colocar o <IP_manager:9001>
+  No portainer Web (http://192.168.23.10:9000), criar um Environment Agent, escolhendo um nome, ex: cloud-computing, e colocar o <IP_manager:9001>
 
   Não esquecer de alterar o Public IP, para o IP do manager.
 
+  P.S.: Pode ser necessário reiniciar o portainer. ``` sudo docker restart portainer-<id>```
 
 - Instalar o nginx (quantas replicas? Substituir o "2")
   ```
@@ -76,7 +77,7 @@ O desenvolvimento da segunda parte do projeto, é a construção e configuraçã
 Dados para login:
     ```
     user="cloud@ipt.pt"
-    | password="cloud"
+    | password="vagrant"
     ```
 
 Efetuar a ligação à BD, com os dados:
